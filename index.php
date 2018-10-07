@@ -8,6 +8,12 @@ main::Program($csv);
 class  main {
 
     public static function Program($csv){
+        $csvrecords = CSVCommands::readCSV($csv);
+        $record = csvrecordsFactory::createCSVRecords();
+        foreach($csvrecords as $records){
+            $array = $records->createArray();
+            print_r($array);
+        }
 
     }
 }
@@ -22,13 +28,19 @@ class csvrecord{
         foreach($record as $key=>$value){
             $this->getProperties($key,$value);
         }
-        print_r($this);
+
+    }
+
+    public function createArray(){
+        $array = (array) $this;
+        return $array;
     }
 
     public function getProperties($fieldname = null, $value = null){
         $this->{$fieldname} = $value;
     }
 }
+
 
 //Record factory
 class csvrecordsFactory{
@@ -53,7 +65,7 @@ class CSVCommands {
         $count = 0;
         //Loop through the file
         while (($csvtext = fgetcsv($readfile, 50000,",")) !== FALSE) {
-            //Get the fieldnames from the first line
+            //Get the field names from the first line
             if($count == 0){
                 $fieldnames = $csvtext;
             }
