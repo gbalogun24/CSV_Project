@@ -10,11 +10,7 @@ class  main {
     public static function Program($csv){
         $csvrecords = CSVCommands::readCSV($csv);
         $record = csvrecordsFactory::createCSVRecords();
-        foreach($csvrecords as $records){
-            $array = $records->createArray();
-            print_r($array);
-        }
-
+        print_r(html::Convertarray($csvrecords));
     }
 }
 
@@ -81,5 +77,18 @@ class CSVCommands {
 
 }
 
+
+class html{
+
+    public static function Convertarray($csvrecords){
+        foreach($csvrecords as $records){
+            $array = $records->createArray();
+        }
+        return $array;
+    }
+
+
+
+}
 
 ?>
