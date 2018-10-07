@@ -1,4 +1,5 @@
 <html>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
 <?php
 
 $csv = "/home/gafar/PhpstormProjects/CSV_new/file.csv";
@@ -11,7 +12,7 @@ class  main {
     public static function Program($csv){
         $csvrecords = CSVCommands::readCSV($csv);
         $record = csvrecordsFactory::createCSVRecords();
-        print_r(html::generateRows($csvrecords));
+        print_r(html::generateTable($csvrecords));
     }
 }
 
@@ -117,6 +118,27 @@ class html{
             $row = "<td>".$values."</td>";
             print ($row);
         }
+    }
+
+    public static function generateTR($html){
+        $tr = "<tr>".$html."</tr>";
+        print $tr;
+    }
+
+    public static function generateTHead($html){
+        $thead = "<thead>".$html."</thead>";
+        print $thead;
+    }
+    public static function generateTBody($html){
+        $tbody = "<tbody>".$html."</tbody>";
+        print $tbody;
+    }
+    public static function generateTable($csvrecords){
+        print "<table class= 'table table-striped'>";
+
+        self::generateTHead(self::generateTR(self::generateHeader($csvrecords)));
+        self::generateTBody(self::generateTR(self::generateRows($csvrecords)));
+        print "</table>";
     }
 
 }
