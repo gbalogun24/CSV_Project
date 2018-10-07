@@ -11,8 +11,9 @@ class  main {
 
     public static function Program($csv){
         $csvrecords = CSVCommands::readCSV($csv);
-        $record = csvrecordsFactory::createCSVRecords();
-        print_r(html::generateTable($csvrecords));
+        // print(html::convertArray($csvrecords));
+        print(html::generateTable($csvrecords));
+
     }
 }
 
@@ -23,6 +24,7 @@ class csvrecord{
     public function __construct(Array $fieldnames = null, $values=null){
 
         $record = array_combine($fieldnames,$values);
+        // print_r($record);
         foreach($record as $key=>$value){
             $this->getProperties($key,$value);
         }
@@ -83,9 +85,11 @@ class CSVCommands {
 class html{
 
     public static function Convertarray($csvrecords){
+
         foreach($csvrecords as $records){
             $array = $records->createArray();
-            //  print_r($array);
+            $value[] = array_values($array);
+            // print_r($value);
         }
         return $array;
     }
@@ -106,18 +110,28 @@ class html{
     }
 
     //Get the values of the arrays
-    public static function getValues(Array $records){
-        $array = self::Convertarray($records);
-        $values = array_values($array);
-        return $values;
+    public static function getValues($records){
+        foreach($records as $records){
+            $array = $records->createArray();
+            $row[] = array_values($array);
+            //       print_r($row);
+        }
+        return $row;
     }
     //generate header
-    public static function generateRows(Array $value){
-        $rows = self::getValues($value);
-        foreach($rows as $keys=>$values){
-            $row = "<td>".$values."</td>";
-            print ($row);
+    public static function generateRows(Array $row){
+        $rows = self::getValues($row);
+        print_r($rows);
+        foreach($rows as $value){
+            print "<tr>";
+            foreach($value as $value1){
+                $data = "<td>".$value1."</td>";
+                print($data);
+            }
+            print "</tr>";
+            // $newrow = self::generateTR($data);
         }
+        //return $newrow;
     }
 
     public static function generateTR($html){
