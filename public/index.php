@@ -11,7 +11,7 @@ class  main {
     public static function Program($csv){
         $csvrecords = CSVCommands::readCSV($csv);
         $record = csvrecordsFactory::createCSVRecords();
-        print_r(html::generateHeader($csvrecords));
+        print_r(html::generateRows($csvrecords));
     }
 }
 
@@ -84,8 +84,7 @@ class html{
     public static function Convertarray($csvrecords){
         foreach($csvrecords as $records){
             $array = $records->createArray();
-
-            // print_r($keys);
+            //  print_r($array);
         }
         return $array;
     }
@@ -102,6 +101,21 @@ class html{
         foreach($headers as $keys=>$values){
             $header = "<th scope='col'>".$values."</th>";
             print ($header);
+        }
+    }
+
+    //Get the values of the arrays
+    public static function getValues(Array $records){
+        $array = self::Convertarray($records);
+        $values = array_values($array);
+        return $values;
+    }
+    //generate header
+    public static function generateRows(Array $value){
+        $rows = self::getValues($value);
+        foreach($rows as $keys=>$values){
+            $row = "<td>".$values."</td>";
+            print ($row);
         }
     }
 
