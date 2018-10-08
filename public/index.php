@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
 <?php
 
-$csv = "/home/gafar/PhpstormProjects/CSV_new/file.csv";
+$csv = "/home/gafar/PhpstormProjects/CSV_project/test.csv";
 
 main::Program($csv);
 
@@ -85,7 +85,8 @@ class CSVCommands {
 class html{
 
     public static function Convertarray($csvrecords){
-
+        $statements= '$array = $keys->createArray(); $value[] = array_values($array);';
+        //print_r($statements);
         foreach($csvrecords as $records){
             $array = $records->createArray();
             $value[] = array_values($array);
@@ -103,10 +104,12 @@ class html{
     //generate header
     public static function generateHeader(Array $key){
         $headers = self::getKeys($key);
+        print "<thead><tr>";
         foreach($headers as $keys=>$values){
             $header = "<th scope='col'>".$values."</th>";
             print ($header);
         }
+        print "</tr></thead>";
     }
 
     //Get the values of the arrays
@@ -121,7 +124,7 @@ class html{
     //generate header
     public static function generateRows(Array $row){
         $rows = self::getValues($row);
-        print_r($rows);
+        //  print_r($rows);
         foreach($rows as $value){
             print "<tr>";
             foreach($value as $value1){
@@ -155,6 +158,20 @@ class html{
         print "</table>";
     }
 
+}
+
+
+class CommonFunctions{
+    //function to print a variable
+    public static function PrintStatement($print){
+        print ($print);
+    }
+    //function for a foreach loop
+    public static function Loop($array, $action){
+        foreach($array as $keys){
+            eval($action);
+        }
+    }
 }
 
 ?>
