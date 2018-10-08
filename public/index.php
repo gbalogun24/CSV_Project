@@ -11,9 +11,7 @@ class  main {
 
     public static function Program($csv){
         $csvrecords = CSVCommands::readCSV($csv);
-        // print(html::convertArray($csvrecords));
-        print(html::generateTable($csvrecords));
-
+        CommonFunctions::PrintStatement((html::generateTable($csvrecords)));
     }
 }
 
@@ -24,7 +22,6 @@ class csvrecord{
     public function __construct(Array $fieldnames = null, $values=null){
 
         $record = array_combine($fieldnames,$values);
-        // print_r($record);
         foreach($record as $key=>$value){
             $this->getProperties($key,$value);
         }
@@ -47,7 +44,6 @@ class csvrecordsFactory{
 
 //Function to create array of records
     public static function createCSVRecords(Array $fieldnames=null, $values=null){
-
         $csvrecords = new csvrecord($fieldnames, $values);
         return $csvrecords;
     }
@@ -83,14 +79,12 @@ class CSVCommands {
 
 
 class html{
-
+    //Convert the object to an array
     public static function Convertarray($csvrecords){
-        $statements= '$array = $keys->createArray(); $value[] = array_values($array);';
-        //print_r($statements);
+
         foreach($csvrecords as $records){
             $array = $records->createArray();
             $value[] = array_values($array);
-            // print_r($value);
         }
         return $array;
     }
@@ -101,15 +95,18 @@ class html{
         $keys = array_keys($array);
         return $keys;
     }
+
     //generate header
     public static function generateHeader(Array $key){
         $headers = self::getKeys($key);
-        print "<thead><tr>";
+        $header = "";
+        $header .="<tr>";
         foreach($headers as $keys=>$values){
-            $header = "<th scope='col'>".$values."</th>";
-            print ($header);
+            $header.= "<th scope='col'>".$values."</th>";
         }
-        print "</tr></thead>";
+        $header.="</tr>";
+
+        CommonFunctions::PrintStatement(self::generateTHead($header));
     }
 
     //Get the values of the arrays
@@ -117,45 +114,40 @@ class html{
         foreach($records as $records){
             $array = $records->createArray();
             $row[] = array_values($array);
-            //       print_r($row);
         }
         return $row;
     }
     //generate header
     public static function generateRows(Array $row){
         $rows = self::getValues($row);
-        //  print_r($rows);
+        $data = "";
         foreach($rows as $value){
-            print "<tr>";
+             $data.= "<tr>";
             foreach($value as $value1){
-                $data = "<td>".$value1."</td>";
-                print($data);
+                $data .= "<td>".$value1."</td>";
             }
-            print "</tr>";
-            // $newrow = self::generateTR($data);
+                $data.= "</tr>";
         }
-        //return $newrow;
+        CommonFunctions::PrintStatement(self::generateTBody($data));
     }
 
-    public static function generateTR($html){
-        $tr = "<tr>".$html."</tr>";
-        print $tr;
-    }
-
+    //Generate thead tags
     public static function generateTHead($html){
         $thead = "<thead>".$html."</thead>";
         print $thead;
     }
+    //Generate tbody tags
     public static function generateTBody($html){
         $tbody = "<tbody>".$html."</tbody>";
         print $tbody;
     }
+    //Generate entire table
     public static function generateTable($csvrecords){
-        print "<table class= 'table table-striped'>";
+        CommonFunctions::PrintStatement("<table class= 'table table-striped'>");
 
-        self::generateTHead(self::generateTR(self::generateHeader($csvrecords)));
-        self::generateTBody(self::generateTR(self::generateRows($csvrecords)));
-        print "</table>";
+        self::generateHeader($csvrecords);
+        self::generateRows($csvrecords);
+        CommonFunctions::PrintStatement("</table>");
     }
 
 }
@@ -165,12 +157,6 @@ class CommonFunctions{
     //function to print a variable
     public static function PrintStatement($print){
         print ($print);
-    }
-    //function for a foreach loop
-    public static function Loop($array, $action){
-        foreach($array as $keys){
-            eval($action);
-        }
     }
 }
 
