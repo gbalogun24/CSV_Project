@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
 <?php
 
-$csv = "/home/gafar/PhpstormProjects/CSV_project/public/test.csv";
+$csv = "test.csv";
 
 main::Program($csv);
 
